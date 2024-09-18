@@ -10,6 +10,9 @@ typedef struct cadastro {
     char nome[100];
     char senha[10];
     char reais[20]; 
+    char bitcoin[20];
+    char ripple[20];
+    char ethereum[20];
 } cadastro;
 
 void Consultarsaldo();
@@ -46,7 +49,7 @@ void menu(cadastro *p, int index) {
 
         switch (resposta) {
             case 1:
-                Consultarsaldo();
+                Consultarsaldo(p, index);
                 break;
             case 2:
                 Consultarextrato();
@@ -154,7 +157,13 @@ int achar_usuario(cadastro *p) {
                 strcpy(p[posicao_struct].senha, token);
             } else if (contador == 3) {
                 strcpy(p[posicao_struct].reais, token);
-            }
+            } else if (contador == 4) {
+            	strcpy(p[posicao_struct].bitcoin, token);
+			} else if (contador == 5){
+				strcpy(p[posicao_struct].ripple, token);
+			} else if (contador == 6){
+				strcpy(p[posicao_struct].ethereum, token);
+			}
             contador++;
             token = strtok(NULL, ";");
         }
@@ -165,8 +174,15 @@ int achar_usuario(cadastro *p) {
     return 0;
 }
 
-void Consultarsaldo() {
-    printf("Hello World!! 1\n");
+void Consultarsaldo(cadastro *p, int index) {
+	printf("------------------------------\n");
+    printf("Nome: %s\n", p[index].nome);
+    printf("CPF: %s\n", p[index].cpf);
+    printf("Reais: %s\n", p[index].reais);
+	printf("Bitcoin: %s\n", p[index].bitcoin);
+	printf("Riplle: %s\n", p[index].ripple);
+	printf("Ethereum: %s\n", p[index].ethereum);   
+	printf("------------------------------\n"); 
 }
 
 void Consultarextrato() {
@@ -175,7 +191,8 @@ void Consultarextrato() {
 
 void Depositar(cadastro *p, int index) {
     float valor;
-	   
+	
+	printf("------------------------------\n");   
    	printf("Qual o valor que vai ser depositado: ");
    	scanf("%f", &valor);
    	float saldoAtual = atof(p[index].reais);
@@ -183,25 +200,29 @@ void Depositar(cadastro *p, int index) {
 	sprintf(p[index].reais, "%.2f", saldoAtual);
 	printf("Transação Bem-Sucedida! Novo valor: %.2f\n", saldoAtual);
 	printf("%s\n", p[index].reais);
-	
+	printf("------------------------------\n");
 
 }
 
 void Sacar(cadastro *p, int index) {
     float valor;
-	   
+	
+	printf("------------------------------\n");   
    	printf("Qual o valor que vai ser sacado: ");
    	scanf("%f", &valor);
    	float saldoAtual = atof(p[index].reais);
    	if (valor > saldoAtual){
    		printf("Não é possível realizar essa operação\n");
+   		printf("------------------------------\n");
 	   } else {
 		   	saldoAtual -= valor;
 		   	sprintf(p[index].reais, "%.2f", saldoAtual);
 			printf("Transação Bem-Sucedida! Novo valor: %.2f\n", saldoAtual);
 			printf("%s\n", p[index].reais);
+			printf("------------------------------\n");
 		
 		}
+		
 }
 
 void ComprarCriptomoedas() {
