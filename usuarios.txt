@@ -1,0 +1,2 @@
+12345678900;Felipe Bechelli Prado;123456;1200,0
+12345678911;Gustavo Cheida;12345;1000,0
