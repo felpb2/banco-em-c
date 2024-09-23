@@ -1,0 +1,4 @@
+1 ->Bitcoin   2000 R$  2%compra/3%venda  
+2 ->Ethereum  1000 R$  1%compra/2%venda
+3 ->Ripple    500 R$   1%compra/1%venda
+
