@@ -29,7 +29,7 @@ typedef struct atualizar_cripto{
 } atualizar_cripto;
 
 void Consultarsaldo(cadastro *p, int index);
-void Consultarextrato();
+int Consultarextrato(cadastro *p, int index);
 void Depositar(cadastro *p, int index);
 void Sacar(cadastro *p, int index);
 int Criptomoedas(cadastro *p, int numero_struct, int tipo);
@@ -42,13 +42,21 @@ void limparstring(char *array){
     }
 }
 
+void obterDataAtual(char *data) { // pega o dia/mes/ano atual
+    time_t t = time(NULL);
+    struct tm *tm_info = localtime(&t);
+
+    // Formatar a data no formato "DD/MM/AAAA"
+    strftime(data, 11, "%d/%m/%Y", tm_info);
+}
+
 // PESQUISAR CRIPTOMOEDAS (ctrl + f) --> funçao repetitiva
 void ExibirInformacoesCompra(const char* nomeMoeda, float taxa, float valorCompra, float saldoNovo, float saldoCripto) {
-    printf("|------------------------------|\n");
-    printf("|     Informações transação    |\n");
-    printf("|------------------------------|\n");
+    printf("|---------------------------------|\n");
+    printf("|     Informações transação       |\n");
+    printf("|---------------------------------|\n");
     printf("|Taxa --> (%.2f/100)\n", taxa * 100);
-    printf("|Valor Bruto: %.2f\n", valorCompra);
+    printf("|Valor líquido: %.2f\n", valorCompra);
     printf("|Saldo Novo(reais): %.2f\n", saldoNovo);
     printf("|Saldo %s: %.2f\n", nomeMoeda, saldoCripto);
     printf("|--------------------------------|\n");
@@ -57,6 +65,7 @@ void ExibirInformacoesCompra(const char* nomeMoeda, float taxa, float valorCompr
 
 int salvar_dados(cadastro *p){
     FILE *arquivo = fopen("usuarios.txt", "w");
+    
     if(arquivo == NULL){
         printf("Erro ao abrir o arquivo!\n");
         return 1;
@@ -64,7 +73,8 @@ int salvar_dados(cadastro *p){
 	
 	int i;
     for(i = 0; i < 2; i++){
-        fprintf(arquivo, "%s;%s;%s;%s;%s;%s;%s\n", p[i].cpf, p[i].nome, p[i].senha, p[i].reais, p[i].bitcoin, p[i].Ethereum, p[i].Ripple);
+        fprintf(arquivo, "%s;%s;%s;%s;%s;%s;%s \n", p[i].cpf, p[i].nome, p[i].senha, p[i].reais, p[i].bitcoin, p[i].Ethereum, p[i].Ripple);
+        //printf("%s;%s;%s;%s;%s;%s;%s\n", p[i].cpf, p[i].nome, p[i].senha, p[i].reais, p[i].bitcoin, p[i].Ethereum, p[i].Ripple); -- teste
     }
 
     fclose(arquivo);
@@ -85,13 +95,14 @@ int menu(cadastro *p, int index) {
         printf("| 8. Sair                  |\n");
         printf("----------------------------\n");
         scanf("%d", &resposta);
+        getchar();
 
         switch (resposta) {
             case 1:
                 Consultarsaldo(p, index);
                 break;
             case 2:
-                Consultarextrato();
+                Consultarextrato(p, index);
                 break;
             case 3:
                 Depositar(p, index);
@@ -120,7 +131,7 @@ int menu(cadastro *p, int index) {
     }
 }
 
-void login(cadastro *p){
+int login(cadastro *p){
     char nome[255], senha[255], cpf[12];
     int posicao_struct = -1;
 
@@ -160,9 +171,9 @@ void login(cadastro *p){
             scanf(" %c", &letra);
             getchar();  // Limpa buffer
             if(letra == 's'){
-                break;
+                return 0;
             }
-        } else {
+        }else {
             printf("Usuário não cadastrado ou dados incorretos\n");
             printf("Tente novamente!\n");
         }
@@ -196,14 +207,16 @@ int achar_usuario(cadastro *p) {
             } else if (contador == 5) {
                 strcpy(p[posicao_struct].Ethereum, token);
             } else if (contador == 6) {
+            	token[strcspn(token, "\n")] = '\0'; 
                 strcpy(p[posicao_struct].Ripple, token);
+                
             }
             contador++;
             token = strtok(NULL, ";");
         }
         posicao_struct++;
     }
-
+	
     fclose(arquivo);
     return 0;
 }
@@ -220,18 +233,22 @@ void Consultarsaldo(cadastro *p, int index) {
 }
 
 void Depositar(cadastro *p, int index) {
-    float valor;
+    float valor, saldoAtual;
     printf("Qual o valor que vai ser depositado: ");
     scanf("%f", &valor);
     getchar();
 
-    float saldoAtual = atof(p[index].reais);
+    saldoAtual = atof(p[index].reais);
     saldoAtual += valor;
+    
     sprintf(p[index].reais, "%.2f", saldoAtual);
-
     printf("Depósito Bem-Sucedido! Novo saldo: %.2f\n", saldoAtual);
+    
+    salvar_extrato(p[index].cpf, "Depositar" , "Reais", &saldoAtual, &valor, '+', 0);
+    
 }
 
+// salvar_extrato(char cpf[12],  char tipo[15] , char moeda[10], float valor_mudanca)
 void Sacar(cadastro *p, int index) {
     float valor;
     char senha[10];
@@ -252,11 +269,13 @@ void Sacar(cadastro *p, int index) {
             saldoAtual -= valor;
             sprintf(p[index].reais, "%.2f", saldoAtual);
             printf("Saque Bem-Sucedido! Novo saldo: %.2f\n", saldoAtual);
+
+            salvar_extrato(p[index].cpf, "Sacar" , "Reais", &saldoAtual, &valor, '-', 0);
         }
     } else {
         printf("Senha incorreta!\n");
     }
-}
+} // salvar_extrato(p[numero_struct].cpf, "compra", nome_cripto , conversao2, quantidade, taxa);  
 
 int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 
@@ -297,8 +316,8 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 	char confirmacao;
     char saldo_novo[50], saldo_cripto[50];
 	
-	
 	if(tipo == 5){ //comprar
+	
 		printf("Qual moeda deseja comprar?: \n");
 		scanf("%d", &escolha);
 		getchar();
@@ -320,7 +339,7 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 			if(escolha == 1){
 				
 				compra = quantidade * (valor[0].bitcoin + valor[0].bitcoin* 0.02); // taxa de 2% para bitcoin
-		
+				
 				if(atof(p[numero_struct].reais) < compra){
 					printf("Não possui dinheiro suficiente !!\n");
 		
@@ -342,8 +361,9 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 						sprintf(saldo_cripto, "%.2f", conversao2);
 						strcpy(p[numero_struct].bitcoin, saldo_cripto);
 						
-
 						printf("Transação feita com sucesso.\n");
+						salvar_extrato(p[numero_struct].cpf, "Compra" , "bitcoin", &conversao2, &quantidade, '+', 2); 
+						
 					}else{
 						printf("Transação cancelada.\n");
 					}
@@ -352,7 +372,7 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 			}else if(escolha == 2){
 		
 				compra = quantidade * (valor[0].Ethereum + valor[0].Ethereum* 0.01); // Cobra uma taxa de 1% na compra de ethereum
-		
+			
 				if(atof(p[numero_struct].reais) < compra){
 					printf("Não possui dinheiro suficiente !!\n");
 		
@@ -373,7 +393,9 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 						sprintf(saldo_cripto, "%.2f", conversao2);
 						strcpy(p[numero_struct].Ethereum, saldo_cripto);
 
+					
 						printf("Transação feita com sucesso.\n");
+						salvar_extrato(p[numero_struct].cpf, "Compra" , "Ethereum", &conversao2, &quantidade, '+', 1); 
 					}else{
 						printf("Transação cancelada.\n");
 					}
@@ -383,7 +405,7 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 			}else if(escolha == 3){
 		
 				compra = quantidade * (valor[0].Ripple + valor[0].Ripple* 0.01); // Cobra uma taxa de 1% na compra de ripple
-		
+				
 				if(atof(p[numero_struct].reais) < compra){
 		  			printf("Não possui dinheiro suficiente !!\n");
 		
@@ -405,6 +427,9 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 						strcpy(p[numero_struct].Ripple, saldo_cripto);
 
 						printf("Transação feita com sucesso.\n");
+						
+						
+						salvar_extrato(p[numero_struct].cpf, "Compra" , "Ripple", &conversao2, &quantidade, '+', 1); 
 						
 					}else{
 						printf("Transação cancelada.\n");
@@ -429,7 +454,6 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
  
 			venda = quantidade * (valor[0].bitcoin - valor[0].bitcoin* 0.03); // taxa de 3% para bitcoin --> venda
 			
-			
 			if(atof(p[numero_struct].bitcoin) < quantidade){
 				printf("Não possui cripto suficiente !!\n");
 			
@@ -452,6 +476,8 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 
 					printf("Transação feita com sucesso.\n");
 					
+					salvar_extrato(p[numero_struct].cpf,  "Venda" ,"bitcoin", &conversao2, &quantidade, '-', 3);
+					
 				}else{
 					printf("Transação cancelada.\n");
 				}
@@ -459,7 +485,7 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 		}else if(escolha == 2){
 	
 			venda = quantidade * (valor[0].Ethereum - valor[0].Ethereum* 0.02); // Cobra uma taxa de 2% na venda de ethereum
-	
+			
 			if(atof(p[numero_struct].reais) < compra){
 				printf("Não possui dinheiro suficiente !!\n");
 	
@@ -481,6 +507,8 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 					strcpy(p[numero_struct].Ethereum, saldo_cripto);
 
 					printf("Transação feita com sucesso.\n");
+
+					salvar_extrato(p[numero_struct].cpf,  "Venda" ,"Ethereum", &conversao2, &quantidade, '-', 2);
 					
 				}else{
 					printf("Transação cancelada.\n");
@@ -491,7 +519,7 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 		}else if(escolha == 3){
 	
 			venda = quantidade * (valor[0].Ripple - valor[0].Ripple* 0.01); // Cobra uma taxa de 1% na venda de ripple
-	
+		
 			if(atof(p[numero_struct].reais) < compra){
 	  			printf("Não possui dinheiro suficiente !!\n");
 	
@@ -513,6 +541,9 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 					strcpy(p[numero_struct].Ripple, saldo_cripto);
 					
 					printf("Transação feita com sucesso.\n");
+
+					salvar_extrato(p[numero_struct].cpf, "Venda" ,"Ripple", &conversao2, &quantidade, '-', 1);
+					
 				}else{
 					printf("Transação cancelada.\n");
 				}
@@ -522,10 +553,77 @@ int Criptomoedas(cadastro *p,int numero_struct, int tipo){
 			printf("Escolha inválida\n");
 		}		
 	}
+	
+	return 0;
 }
 
-void Consultarextrato(){
-	printf("Hello World!!\n");
+//char cpf[],  char tipo[] , char moeda[], float valor_mudanca, float quantidade, float taxa, char sinal
+
+int salvar_extrato(char cpf[], char tipo[], char moeda[], float *valor_mudanca, float *quantidade, char sinal[], int *taxa){
+	
+	FILE *arquivo;
+	arquivo = fopen("extratos.txt", "a");
+	
+	if(arquivo == NULL){
+		printf("Erro ao abrir o arquivo !!\n");
+		return 1;
+	}
+	
+	char data[11];
+	obterDataAtual(data);
+	      
+	// "%s; %s; %s; %s; %f; %f; %c; %f\n", cpf, data, tipo, moeda, quantidade, valor_mudanca, sinal, taxa 
+	//  DATA -------- Tipo -- Moeda --- Saldo(Moeda) --- sinal -- valor_mudanca --- moeda (sinal) quantidade;
+	// 12/09/2024 --> venda: bitcoin | Saldo(moeda): (+ ou -) quantidade | moeda: (+ ou -) valor-final| taxa: taxa;
+	fprintf(arquivo, "%s ; %s ; %s ; %s ;%f;%f; %c ;%d\n", cpf, data, tipo, moeda, *valor_mudanca, *quantidade, sinal, taxa); 
+	
+	fclose(arquivo);
+	return 0;
+}
+
+int Consultarextrato(cadastro *p, int index) { //somente le o arquivo
+    
+    FILE *arquivo;
+    
+    arquivo = fopen("extratos.txt","r");
+    
+    if(arquivo == NULL){
+    	printf("Erro ao abrir o arquivo !!!\n");
+    	return 1;
+	}
+	
+	int verificador = 0;
+	char linhas[255];	
+	printf("%s(cpf_struct)\n", p[index].cpf);															
+	
+	while(fgets(linhas, 255 ,arquivo) != NULL){
+		char cpf_linhas[12], moedas[12], tipo[20], data[11], sinal;
+		float valor_mudanca, quantidade;
+		int taxa;
+		
+	
+		int result = sscanf(linhas, "%s ; %s ; %s ; %s ;%f;%f; %c ;%d \n", cpf_linhas, data, tipo, moedas, &valor_mudanca, &quantidade, &sinal, &taxa); // 12345678900; venda ; bitcoin; quantidade; ; 
+		printf("%s(cpf_linhas)\n", cpf_linhas);
+		printf("%s(data)\n", data);
+		printf("%s(tipo)\n", tipo);
+		printf("%s(moedas)\n", moedas);
+		printf("%f(valor_mudanca)\n", valor_mudanca);
+		printf("%f(quantidade)\n", quantidade);
+		printf("%c(sinal)\n", sinal);
+		printf("%d(taxa)\n", taxa);
+		
+		if (result == 8 && strcmp(cpf_linhas, p[index].cpf) == 0) {
+            verificador++;
+            printf("%s --> %s: %s | Saldo(%s): %c %.2f | %s: %.2f | Taxa: %d \n", 
+                   data, tipo, moedas, moedas, sinal, quantidade, moedas, valor_mudanca, taxa);
+        
+        }
+	}
+	
+	if(verificador == 0){
+		printf("Nenhuma transação realizada.\n");
+	}	
+	return 0;
 }
 
 
@@ -604,7 +702,7 @@ int main() {
 	setlocale(LC_ALL, "portuguese");
 
     cadastro *pessoas;
-    pessoas = malloc(2 * sizeof(pessoas)); //mudar para 10
+    pessoas = malloc(2 * sizeof(cadastro)); //mudar para 10
     
     achar_usuario(pessoas);
 	login(pessoas);
