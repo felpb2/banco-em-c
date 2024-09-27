@@ -1,4 +1,2 @@
-12345678900;Felipe Bechelli Prado;123456;1190,00;0;1,00;0
-
-12345678911;Gustavo Cheida;12345;1000;0;0;0
-
+12345678900;Felipe Bechelli Prado;123456;2000;0;2,00;1,00  
+12345678911;Gustavo Cheida;12345;1000;0;0;0                   
