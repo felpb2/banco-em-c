@@ -7,7 +7,7 @@
 O objetivo desse projeto é desenvolver um sistema de Banco com foco em Exchange de Criptomoedas. Os usuários registrados poderão comprar e vender criptomoedas, além de administrar seus investimentos em um menu com várias opções. Por meio disso, eles poderão visualizar seu saldo, extrato e cotação da criptomoeda em tempo real. Assim, o usuário poderá ter uma experiência com o mercado de criptomoedas. 
 
 # Compilação e Execução
-O código será compilado e executado no Replit, uma plataforma online para programas. Para acessar o menu principal, o usuário precisará de seus detalhes de login bancário: o nome, CPF e senha. Uma vez que estiverem corretamente autenticados, ele será direcionado para a lista de opções, que são:
+O código será compilado e executado no Project1.exe(main.c), nós testamos o código no Replit, uma plataforma online para programas. Para acessar o menu principal, o usuário precisará de seus detalhes de login bancário: o nome, CPF e senha. Uma vez que estiverem corretamente autenticados, ele será direcionado para a lista de opções, que são:
 * 1 - Consultar Saldo – verifica a quantidade de dinheiro e das criptomoedas
 * 2 - Consultar extrato – verifica o histórico de transações feitas na conta
 * 3 - Depositar – Realiza depósitos bancários na conta
