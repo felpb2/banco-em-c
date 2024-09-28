@@ -5,7 +5,7 @@ int main() {
 	setlocale(LC_ALL, "portuguese");
 
     cadastro *pessoas;
-    pessoas = malloc(10 * sizeof(cadastro)); //mudar para 10
+    pessoas = malloc(10 * sizeof(cadastro)); 
     
     achar_usuario(pessoas);
 	login(pessoas);

@@ -1,6 +1,6 @@
 #include "funcao.h"
 
-void limparstring(char *array){
+void limparstring(char *array){ 
     int i;
     for(i = 0; i < 255 ; i++){
         array[i] = '\0';
