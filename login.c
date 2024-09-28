@@ -9,13 +9,13 @@ int achar_usuario(cadastro *p) {
 
     char linhas[255];
     int posicao_struct = 0;
-    while (fgets(linhas, 255, arquivo)) {
-        char *token = strtok(linhas, ";");
-        int contador = 0;
+    while (fgets(linhas, 255, arquivo)) {   // enquanto tiver recebendo linhas vai continuar no while
+        char *token = strtok(linhas, ";");   // delimitador para cortar a linha em strings ';'
+        int contador = 0;  // indentificar a posição de cada string recortada no seu respectivo lugar na struct
 
-        while (token != NULL) {
+        while (token != NULL) { // a linha precisa ter alguma informação se for vazia não vai prosseguir
             if (contador == 0) {
-                strcpy(p[posicao_struct].cpf, token);
+                strcpy(p[posicao_struct].cpf, token);  
             } else if (contador == 1) {
                 strcpy(p[posicao_struct].nome, token);
             } else if (contador == 2) {
@@ -27,17 +27,17 @@ int achar_usuario(cadastro *p) {
             } else if (contador == 5) {
                 strcpy(p[posicao_struct].Ethereum, token);
             } else if (contador == 6) {
-            	token[strcspn(token, "\n")] = '\0';
-                strcpy(p[posicao_struct].Ripple, token);
+            	token[strcspn(token, "\n")] = '\0';    // tirar o \n do ultimo caracter para não ficar no buffer do teclado e evitar espaços indesejados 
+                strcpy(p[posicao_struct].Ripple, token);  // struct
 
             }
             contador++;
-            token = strtok(NULL, ";");
+            token = strtok(NULL, ";");  
         }
         posicao_struct++;
     }
 
-    fclose(arquivo);
+    fclose(arquivo); // fecha arquivo
     return 0;
 }
 
@@ -64,11 +64,11 @@ int login(cadastro *p){
         printf("------------------------------\n");
 
         int i, contador = 0;
-        for (i = 0; i < 10; i++) {
+        for (i = 0; i < 10; i++) {  // Carregar os usuários que estão cadastrados verificando se o cpf, nome e senha batem com os dados preenchidos
             if (strcmp(cpf, p[i].cpf) == 0 && strcmp(nome, p[i].nome) == 0 && strcmp(senha, p[i].senha) == 0) {
                 contador++;
                 posicao_struct = i;
-                break;
+                break; // caso achou a semelhanca não precisa continuar vendo.
             }
         }
 
@@ -77,7 +77,7 @@ int login(cadastro *p){
             menu(p, posicao_struct);
 
             char letra;
-            printf("Deseja sair (s/n)?\n");
+            printf("Deseja sair (s/n)?\n");   // opcao de saida 
             scanf(" %c", &letra);
             getchar();  // Limpa buffer
             if(letra == 's'){

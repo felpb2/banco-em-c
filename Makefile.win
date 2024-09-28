@@ -1,0 +1,58 @@
+# Project: Project1
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = main.o login.o menu.o sacar.o depositar.o Consultar_saldo.o Funcoes_extras.o Comprarcripto.o Vendercripto.o Extrato.o Atualizar.o
+LINKOBJ  = main.o login.o menu.o sacar.o depositar.o Consultar_saldo.o Funcoes_extras.o Comprarcripto.o Vendercripto.o Extrato.o Atualizar.o
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+BIN      = Project1.exe
+CXXFLAGS = $(CXXINCS) 
+CFLAGS   = $(INCS) 
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.c
+	$(CC) -c main.c -o main.o $(CFLAGS)
+
+login.o: login.c
+	$(CC) -c login.c -o login.o $(CFLAGS)
+
+menu.o: menu.c
+	$(CC) -c menu.c -o menu.o $(CFLAGS)
+
+sacar.o: sacar.c
+	$(CC) -c sacar.c -o sacar.o $(CFLAGS)
+
+depositar.o: depositar.c
+	$(CC) -c depositar.c -o depositar.o $(CFLAGS)
+
+Consultar_saldo.o: Consultar_saldo.c
+	$(CC) -c Consultar_saldo.c -o Consultar_saldo.o $(CFLAGS)
+
+Funcoes_extras.o: Funcoes_extras.c
+	$(CC) -c Funcoes_extras.c -o Funcoes_extras.o $(CFLAGS)
+
+Comprarcripto.o: Comprarcripto.c
+	$(CC) -c Comprarcripto.c -o Comprarcripto.o $(CFLAGS)
+
+Vendercripto.o: Vendercripto.c
+	$(CC) -c Vendercripto.c -o Vendercripto.o $(CFLAGS)
+
+Extrato.o: Extrato.c
+	$(CC) -c Extrato.c -o Extrato.o $(CFLAGS)
+
+Atualizar.o: Atualizar.c
+	$(CC) -c Atualizar.c -o Atualizar.o $(CFLAGS)

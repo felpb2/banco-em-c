@@ -9,7 +9,7 @@ int salvar_dados(cadastro *p){
     }
 
 	int i;
-    for(i = 0; i < 10; i++){
+    for(i = 0; i < 10; i++){   // Salvar os dados atualizados no arquivo
         fprintf(arquivo, "%s;%s;%s;%s;%s;%s;%s\n", p[i].cpf, p[i].nome, p[i].senha, p[i].reais, p[i].bitcoin, p[i].Ethereum, p[i].Ripple);
         //printf("%s;%s;%s;%s;%s;%s;%s\n", p[i].cpf, p[i].nome, p[i].senha, p[i].reais, p[i].bitcoin, p[i].Ethereum, p[i].Ripple); -- teste
     }
@@ -58,7 +58,7 @@ int menu(cadastro *p, int index) {
                 salvar_dados(p);
                 break;
             case 7:
-                Atualizar();
+                Atualizar(); // atualizar os valores das criptomoedas
                 break;
             case 8:
                 return 0;  // Sair do menu

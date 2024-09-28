@@ -9,9 +9,9 @@ void Depositar(cadastro *p, int index) {
     saldoAtual = atof(p[index].reais);
     saldoAtual += valor;
 
-    sprintf(p[index].reais, "%.2f", saldoAtual);
+    sprintf(p[index].reais, "%.2f", saldoAtual); // salvando no struct
     printf("Depósito Bem-Sucedido! Novo saldo: %.2f\n", saldoAtual);
 
-    salvar_extrato(p[index].cpf, "Depositar" , "Reais", &saldoAtual, &valor, '+', 0);
+    salvar_extrato(p[index].cpf, "Depositar" , "Reais", &saldoAtual, &valor, '+', 0); // salvando no extrato
 
 }
