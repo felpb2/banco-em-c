@@ -1,7 +1,7 @@
 # Banco de Exchange de Criptomoedas
 
-## Gustavo Novais Cheida RA: 24.124.065-4
-## Felipe Bechelli Prado RA: 24.124.002-7
+Gustavo Novais Cheida RA: 24.124.065-4
+Felipe Bechelli Prado RA: 24.124.002-7
 
 # Objetivo do Projeto
 O objetivo desse projeto é desenvolver um sistema de Banco com foco em Exchange de Criptomoedas. Os usuários registrados poderão comprar e vender criptomoedas, além de administrar seus investimentos em um menu com várias opções. Por meio disso, eles poderão visualizar seu saldo, extrato e cotação da criptomoeda em tempo real. Assim, o usuário poderá ter uma experiência com o mercado de criptomoedas. 
