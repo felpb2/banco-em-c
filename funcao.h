@@ -54,9 +54,12 @@ void obterDataAtual(char *data);
 void ExibirInformacoesCompra(const char* nomeMoeda, float taxa, float valorCompra, float saldoNovo, float saldoCripto);
 int Atualizar();
 
-int login_adm(admin *tam, int tamanho_adm, int tamanho_usuario);
+int login_adm(admin *tam, int tamanho_adm, int tamanho_usuario, cadastro *pessoas);
 int achar_admin(admin *tam);
-int menu_admin();
+int menu_admin(admin *tam, int quant_usuarios, cadastro *pessoas);
+void cadastrar_investidor();
+void excluir_investidor();
+
 
 
 #endif
