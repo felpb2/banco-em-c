@@ -59,6 +59,7 @@ int achar_admin(admin *tam);
 int menu_admin(admin *tam, int quant_usuarios, cadastro *pessoas);
 void cadastrar_investidor();
 void excluir_investidor();
+void consultar_saldo_de_um_Investidor();
 
 
 

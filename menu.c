@@ -97,7 +97,7 @@ int menu(cadastro *p, int index) {
           printf("Excluir Criptomoeda\n");
           break;
         case 5:
-          printf("Consultar Saldo de um Investidor\n");
+          consultar_saldo_de_um_Investidor();
           break;
         case 6:
           printf("Consultar Extrato de um Investidor\n");
@@ -116,4 +116,3 @@ int menu(cadastro *p, int index) {
     }
 }  
   
-
