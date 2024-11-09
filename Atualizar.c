@@ -1,10 +1,13 @@
 #include "funcao.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>  // Para a funÃ§Ã£o rand()
 
-int Atualizar(){ //atualiza os valores das criptomoedas
-
-	atualizar_cripto *criptos = malloc(sizeof(atualizar_cripto) * 3);
+int Atualizar() {
+    atualizar_cripto *criptos = malloc(sizeof(atualizar_cripto) * 10); // Aloca memÃ³ria para 10 criptomoedas inicialmente
     if (criptos == NULL) {
-        printf("Erro ao alocar memória.\n");
+        printf("Erro ao alocar memoria.\n");
         return 1;
     }
 
@@ -15,37 +18,49 @@ int Atualizar(){ //atualiza os valores das criptomoedas
         return 1;
     }
 
-    // Buffer para armazenar linhas do arquivo
+    // Buffer para armazenar as linhas do arquivo
     char linhas[255];
     int contador = 0;
 
-    printf("Lendo o conteúdo do arquivo...\n");
+    printf("Lendo o conteudo do arquivo...\n");
 
     // Leitura e processamento do arquivo
-    while (fgets(linhas, sizeof(linhas), arquivo) && contador < 3) {
+    while (fgets(linhas, sizeof(linhas), arquivo)) {
 
-        // Variáveis para capturar os dados da linha
+        // Se necessÃ¡rio, realoca mais memÃ³ria para armazenar mais criptomoedas
+        if (contador % 10 == 0 && contador != 0) {
+            atualizar_cripto *temp = realloc(criptos, sizeof(atualizar_cripto) * (contador + 10));
+            if (temp == NULL) {
+                printf("Erro ao realocar memoria.\n");
+                free(criptos);
+                fclose(arquivo);
+                return 1;
+            }
+            criptos = temp;
+        }
+
+        // VariÃ¡veis para capturar os dados da linha
         char nome[50], moeda[3], taxas[20];
         float valor_cripto;
         int numero1;
 
-        float randomNumber = ((rand() / (float)RAND_MAX) * 10 - 5) / 100.0; // Gera variação entre -5% e +5%
+        float randomNumber = ((rand() / (float)RAND_MAX) * 10 - 5) / 100.0; // Gera variaÃ§Ã£o entre -5% e +5%
 
-        // Extração dos dados da linha
+        // ExtraÃ§Ã£o dos dados da linha
         int result = sscanf(linhas, "%d %s %f %s %s", &numero1, nome, &valor_cripto, moeda, taxas);
 
         if (result == 5) {
-            // Armazena os dados na struct, aplicando a variação aleatória
+            // Armazena os dados na struct, aplicando a variaÃ§Ã£o aleatÃ³ria
             criptos[contador].numero = numero1;
             strcpy(criptos[contador].nome, nome);
-            criptos[contador].cripto = valor_cripto * (1 + randomNumber); // Aplica a variação
+            criptos[contador].cripto = valor_cripto * (1 + randomNumber); // Aplica a variaÃ§Ã£o
             strcpy(criptos[contador].moeda, moeda);
             strcpy(criptos[contador].taxas, taxas);
             contador++;
         }
     }
 
-    fclose(arquivo);   // Fecha o arquivo após a leitura
+    fclose(arquivo); // Fecha o arquivo apÃ³s a leitura
 
     // Segunda etapa: abrir o arquivo em modo "w" para sobrescrever
     arquivo = fopen("arquivo_cripto.txt", "w");
@@ -56,15 +71,15 @@ int Atualizar(){ //atualiza os valores das criptomoedas
     }
 
     // Escrita dos valores atualizados no arquivo
-    int i;
-    for (i = 0; i < 3; i++) {
-        fprintf(arquivo, "%d %s %.2f %s %s\n", criptos[i].numero, criptos[i].nome, criptos[i].cripto, criptos[i].moeda, criptos[i].taxas);
+    for (int i = 0; i < contador; i++) {
+        fprintf(arquivo, "%d %s %.2f %s %s\n", criptos[i].numero, criptos[i].nome,
+                criptos[i].cripto, criptos[i].moeda, criptos[i].taxas);
     }
 
-    fclose(arquivo);  // Fecha o arquivo após a escrita
-    free(criptos);    // Libera a memória alocada
+    fclose(arquivo); // Fecha o arquivo apÃ³s a escrita
+    free(criptos);   // Libera a memÃ³ria alocada
 
-    printf("Atualização feita com sucesso !!!\n");
+    printf("Atualizacao feita com sucesso !!!\n");
 
     return 0;
 }
