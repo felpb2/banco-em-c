@@ -31,10 +31,16 @@ typedef struct atualizar_cripto{
     char taxas[20];
 } atualizar_cripto;
 
+typedef struct admin{
+    char cpf[12];
+    char nome[50];
+    char senha[10];
+}admin;
+
 
 int salvar_dados(cadastro *p);
 int achar_usuario(cadastro *p);
-int login(cadastro *p);
+int login(cadastro *p, int tamanho_info);
 int menu(cadastro *p, int index);
 void Consultarsaldo(cadastro *p, int index);
 int Consultarextrato(cadastro *p, int index);
@@ -47,6 +53,10 @@ void limparstring(char *array);
 void obterDataAtual(char *data);
 void ExibirInformacoesCompra(const char* nomeMoeda, float taxa, float valorCompra, float saldoNovo, float saldoCripto);
 int Atualizar();
+
+int login_adm(admin *tam, int tamanho_adm, int tamanho_usuario);
+int achar_admin(admin *tam);
+int menu_admin();
 
 
 #endif
