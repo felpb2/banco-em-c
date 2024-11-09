@@ -103,7 +103,7 @@ int menu(cadastro *p, int index) {
           printf("Consultar Extrato de um Investidor\n");
           break;
         case 7:
-          printf("Atualizar cotação de criptomoedas\n");
+          Atualizar(); // atualizar os valores das criptomoedas
           break;
         case 8:
           break;
