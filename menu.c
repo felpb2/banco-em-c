@@ -67,9 +67,9 @@ int menu(cadastro *p, int index) {
     }
   }
 }
-int menu_admin() {
-  int resposta;
-  while (1) {
+  int menu_admin(admin *tam, int quant_usuarios, cadastro *pessoas){
+    int resposta;
+    while (1) {
       printf("|======================================|\n");
       printf("|1. Cadastrar Novo Investidor          |\n");
       printf("|2. Excluir Investidor                 |\n");
@@ -84,36 +84,36 @@ int menu_admin() {
       getchar();
 
       switch (resposta) {
-          case 1:
-              printf("Cadastrar Novo Investidor\n");
-              break;
-          case 2:
-              printf("Excluir Investidor\n");
-              break;
-          case 3:
-              printf("Cadastrar de Criptomoeda\n");
-              break;
-          case 4:
-              printf("Excluir Criptomoeda\n");
-              break;
-          case 5:
-              printf("Consultar Saldo de um Investidor\n");
-              break;
-          case 6:
-              printf("Consultar Extrato de um Investidor\n");
-              break;
-          case 7:
-              printf("Atualizar cotação de criptomoedas\n");
-              break;
-          case 8:
-              break;
-          default:
-              printf("| Opção Inválida!!! |\n");
+        case 1:
+          cadastrar_investidor();
+          break;
+        case 2:
+          excluir_investidor();
+          break;
+        case 3:
+          printf("Cadastrar de Criptomoeda\n");
+          break;
+        case 4:
+          printf("Excluir Criptomoeda\n");
+          break;
+        case 5:
+          printf("Consultar Saldo de um Investidor\n");
+          break;
+        case 6:
+          printf("Consultar Extrato de um Investidor\n");
+          break;
+        case 7:
+          printf("Atualizar cotação de criptomoedas\n");
+          break;
+        case 8:
+          break;
+        default:
+          printf("| Opção Inválida!!! |\n");
       }
       if (resposta == 8){
-      return 0;
+        return 0;
+      }
     }
-  }
 }  
   
 
