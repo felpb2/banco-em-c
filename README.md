@@ -20,9 +20,6 @@ Um sistema em C para gerenciamento de contas financeiras e operações com cript
 - [Descrição](#descrição)
 - [Funcionalidades](#funcionalidades)
 - [Como Executar](#como-executar)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Contribuições](#contribuições)
-- [Licença](#licença)
 
 ## Descrição
 
