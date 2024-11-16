@@ -6,8 +6,6 @@
 # Objetivo do Projeto
 O sistema tem como objetivo gerenciar contas de usuários, permitindo operações como compra e venda de criptomoedas, depósito e saque de valores, consulta de saldos e extratos, além de funcionalidades administrativas. <br />
 
-## Compilação e Execução <br />
-
 # Compilação e observações: <br />
 A forma de compilação recomendada é pelo REPLIT, uma plataforma virtual que permite rodar diversos tipos de linguagens de programação, voce só precisa criar sua conta e criar um REPL e escolha um nome de seu gosto e o template de C para o projeto , já que a liguagem do projeto é em c. <br />
 
@@ -58,13 +56,13 @@ O sistema foi projetado para uso em terminais e oferece um menu interativo para 
 - Compilador C (MinGW, GCC, ou equivalente)
 - Ambiente de desenvolvimento como Dev C++ ou terminal com suporte a `make`.
 
-#As entradas do Banco estão em um arquivo txt chamado usuarios.txt, já está inserido 2 usuários testes para testar as funcionalidades, e como é possivel a entrada de novos investidores por meio das funcionalidades do administrador é melhor testar dentro do programa. <br />
+# As entradas do Banco estão em um arquivo txt chamado usuarios.txt, já está inserido 2 usuários testes para testar as funcionalidades, e como é possivel a entrada de novos investidores por meio das funcionalidades do administrador é melhor testar dentro do programa. <br />
 
-##Usuários teste:
+## Usuários teste:
 12345678901;Joao Silva;35123;882.00;bitcoin:0.5;Ethereum:1.2;Ripple:0.70 <br />
 98765432100;Maria Souza;23456;2000.00;bitcoin:1.0;Ethereum:0.8;Ripple:0.9 <br />
 
-##Administradores: 
+## Administradores: 
 12345678900;Felipe Prado;12345 <br />
 
 OBS: só existe um administrador pois não tinha nada específicado no projeto que precisaria ter um cadastro de administradores. <br />
